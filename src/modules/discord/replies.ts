@@ -40,6 +40,17 @@ const Replies = {
 
     interaction.editReply({ embeds: [embed] });
   },
+  ServerOffline: (interaction: ChatInputCommandInteraction) => {
+    const embed = baseResponse(interaction);
+
+    embed.setTitle("Server Is Offline");
+    embed.setDescription(
+      "You cannot run this command due to your server being offline. Please run `/start`."
+    );
+    embed.setColor(Colors.DarkRed);
+
+    interaction.editReply({ embeds: [embed] });
+  },
   CacheInUse: (interaction: ChatInputCommandInteraction) => {
     const embed = baseResponse(interaction);
 
@@ -226,6 +237,28 @@ const Replies = {
 
     embed.setTitle(`Backup Restored`);
     embed.setDescription("I successfully restored your backup!");
+    embed.setColor(Colors.Green);
+
+    interaction.editReply({ embeds: [embed] });
+  },
+
+  // Run
+  SlashDetected: (interaction: ChatInputCommandInteraction) => {
+    const embed = baseResponse(interaction);
+
+    embed.setTitle("Slash Detected");
+    embed.setDescription(
+      "You do not need to have a slash at the beginning of your command. Example: `say hello world!`"
+    );
+    embed.setColor(Colors.DarkRed);
+
+    interaction.editReply({ embeds: [embed] });
+  },
+  CommandRan: (interaction: ChatInputCommandInteraction) => {
+    const embed = baseResponse(interaction);
+
+    embed.setTitle("Command Ran");
+    embed.setDescription("Successfully ran your command to the server!");
     embed.setColor(Colors.Green);
 
     interaction.editReply({ embeds: [embed] });

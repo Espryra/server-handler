@@ -12,6 +12,7 @@ import BackupCommand from "./commands/backup";
 import InstallCommand from "./commands/install";
 import ListBackupsCommand from "./commands/listBackups";
 import RestoreBackupCommand from "./commands/restoreBackup";
+import RunCommand from "./commands/run";
 import StartCommand from "./commands/start";
 import StopCommand from "./commands/stop";
 import UninstallCommand from "./commands/uninstall";
@@ -37,6 +38,7 @@ export default class Discord {
       BackupCommand,
       ListBackupsCommand,
       RestoreBackupCommand,
+      RunCommand,
     ];
     Discord.Client = new Client({
       intents: [

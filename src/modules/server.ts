@@ -7,6 +7,14 @@ import Logger from "../utils/logger";
 export default class Server {
   private static Instance: ChildProcess | undefined;
 
+  public static async Init(): Promise<void> {
+    this.AutoBackups();
+  }
+
+  public static get IsOnline(): boolean {
+    return this.Instance !== undefined;
+  }
+
   public static Write(data: string): boolean {
     if (!this.Instance) {
       return false;
@@ -45,6 +53,29 @@ export default class Server {
 
     return true;
   }
+  public static async Backup(): Promise<number> {
+    const process = spawn("./backup.sh", {
+      cwd: Cache.Config.root_path + "scripts",
+      env: {
+        rootpath: Cache.Config.root_path,
+        cachepath: Cache.Config.root_path + "cache",
+        serverpath: Cache.Config.root_path + "server",
+        backuppath: Cache.Config.root_path + "backups",
+        backupitems: Cache.Config.backup_items.join(" "),
+        filename: new Date().toISOString() + ".tar.xz",
+      },
+    });
+
+    return new Promise<number>((resolve) => {
+      process.once("exit", (code) => {
+        if (code === 0) {
+          Logger.Info("Created a new backup!");
+        }
+
+        resolve(code ?? 0);
+      });
+    });
+  }
 
   public static Backups(): Backup[] {
     if (!FileManager.Exists(Cache.Config.root_path + "backups")) {
@@ -63,7 +94,31 @@ export default class Server {
     );
   }
 
-  public static get IsOnline(): boolean {
-    return this.Instance !== undefined;
+  private static AutoBackups(): void {
+    setInterval(async () => {
+      if (!FileManager.Exists(Cache.Config.root_path + "server")) {
+        return;
+      }
+      if (!Server.IsOnline) {
+        return;
+      }
+
+      await this.Backup();
+
+      const backups = this.Backups().sort((a, b) => b.unix - a.unix);
+
+      if (Cache.Config.backup_retention === 0) {
+        return;
+      }
+
+      const overload = backups.slice(
+        Cache.Config.backup_retention,
+        backups.length
+      );
+
+      for (const entry of overload) {
+        FileManager.Delete(Cache.Config.root_path + "backups/" + entry.file);
+      }
+    }, Cache.Config.backup_speed * 1000 * 60);
   }
 }

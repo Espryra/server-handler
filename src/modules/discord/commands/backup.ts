@@ -1,8 +1,8 @@
-import { spawn } from "child_process";
 import { SlashCommandBuilder } from "discord.js";
 import type { Command } from "../../../types/discord";
 import Cache from "../../../utils/cache";
 import FileManager from "../../../utils/fileManager";
+import Server from "../../server";
 import Replies from "../replies";
 
 const BackupCommand: Command = {
@@ -22,35 +22,22 @@ const BackupCommand: Command = {
       return;
     }
 
-    const process = spawn("./backup.sh", {
-      cwd: Cache.Config.root_path + "scripts",
-      env: {
-        rootpath: Cache.Config.root_path,
-        cachepath: Cache.Config.root_path + "cache",
-        serverpath: Cache.Config.root_path + "server",
-        backuppath: Cache.Config.root_path + "backups",
-        backupitems: Cache.Config.backup_items.join(" "),
-        filename: new Date().toISOString() + ".tar.xz",
-      },
-    });
+    Replies.BackupInProcess(interaction);
 
-    process.once("spawn", () => {
-      Replies.BackupInProcess(interaction);
-    });
-    process.once("exit", (code) => {
-      switch (code) {
-        case 0:
-          Replies.BackupCreated(interaction);
-          break;
-        case 1:
-          Replies.CacheInUse(interaction);
-          break;
+    const request = await Server.Backup();
 
-        default:
-          Replies.InternalError(interaction);
-          break;
-      }
-    });
+    switch (request) {
+      case 0:
+        Replies.BackupCreated(interaction);
+        break;
+      case 1:
+        Replies.CacheInUse(interaction);
+        break;
+
+      default:
+        Replies.InternalError(interaction);
+        break;
+    }
   },
 };
 

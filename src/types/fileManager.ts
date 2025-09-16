@@ -9,5 +9,7 @@ export interface Config {
 
   discord_cooldown: number;
 
+  backup_speed: number;
+  backup_retention: number;
   backup_items: string[];
 }
