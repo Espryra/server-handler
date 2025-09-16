@@ -1,3 +1,19 @@
 {
-  "discord_cooldown": 5
+  "show_console": true,
+
+  "root_path": "/root/app/",
+
+  "discord_cooldown": 5,
+
+  "world_folder": "world",
+  "backup_speed": 30,
+  "backup_items": [
+    "allowlist.json",
+    "config",
+    "development_behavior_packs",
+    "development_resource_packs",
+    "permissions.json",
+    "server.properties",
+    "worlds"
+  ]
 }

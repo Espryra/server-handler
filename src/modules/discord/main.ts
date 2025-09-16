@@ -5,9 +5,13 @@ import {
   REST,
   Routes,
 } from "discord.js";
-import type { Command } from "../types/discord";
-import Cache from "../utils/cache";
-import Logger from "../utils/logger";
+import type { Command } from "../../types/discord";
+import Cache from "../../utils/cache";
+import Logger from "../../utils/logger";
+import InstallCommand from "./commands/install";
+import StartCommand from "./commands/start";
+import StopCommand from "./commands/stop";
+import UninstallCommand from "./commands/uninstall";
 
 export default class Discord {
   private static Client: Client;
@@ -22,7 +26,12 @@ export default class Discord {
       return;
     }
 
-    Discord.Commands = [];
+    Discord.Commands = [
+      InstallCommand,
+      UninstallCommand,
+      StartCommand,
+      StopCommand,
+    ];
     Discord.Client = new Client({
       intents: [
         IntentsBitField.Flags.Guilds,

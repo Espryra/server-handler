@@ -12,4 +12,10 @@ export default class FileManager {
 
     fs.writeFileSync(path, dataString);
   }
+  public static Exists(path: Sources | string): boolean {
+    return fs.existsSync(path);
+  }
+  public static Delete(path: Sources | string): void {
+    fs.rmSync(path, { recursive: true, force: true });
+  }
 }

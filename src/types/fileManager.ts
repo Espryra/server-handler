@@ -3,5 +3,11 @@ export enum Sources {
 }
 
 export interface Config {
+  show_console: boolean;
+
+  root_path: string;
+
   discord_cooldown: number;
+
+  backup_items: string[];
 }
