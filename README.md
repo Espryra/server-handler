@@ -3,7 +3,6 @@ This project is currently **still in development**!
 # Notes
 
 1. This only works on linux machines, and they must be debian based (Ex: Ubuntu.)
-2. This is made to run in the `/root/app/` directory.
 
 # .env
 

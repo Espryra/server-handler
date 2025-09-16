@@ -6,6 +6,7 @@
   "discord_cooldown": 1,
 
   "backup_speed": 30,
+  "backup_retention": 48,
   "backup_items": [
     "allowlist.json",
     "config",
