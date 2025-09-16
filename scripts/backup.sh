@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ -d $cachepath ]; then
-    echo "Backup was already in progress."
+    echo "Cache is in use."
     exit 1
 fi
 

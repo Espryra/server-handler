@@ -3,7 +3,7 @@
 
   "root_path": "/root/app/",
 
-  "discord_cooldown": 5,
+  "discord_cooldown": 1,
 
   "backup_speed": 30,
   "backup_items": [

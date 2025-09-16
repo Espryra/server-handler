@@ -18,4 +18,10 @@ export default class FileManager {
   public static Delete(path: Sources | string): void {
     fs.rmSync(path, { recursive: true, force: true });
   }
+  public static MakeDirectory(path: Sources | string): void {
+    fs.mkdirSync(path);
+  }
+  public static Directory(path: Sources | string): string[] {
+    return fs.readdirSync(path);
+  }
 }

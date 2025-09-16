@@ -1,4 +1,5 @@
 import { spawn, type ChildProcess } from "child_process";
+import type { Backup } from "../types/server";
 import Cache from "../utils/cache";
 import FileManager from "../utils/fileManager";
 import Logger from "../utils/logger";
@@ -43,6 +44,23 @@ export default class Server {
     });
 
     return true;
+  }
+
+  public static Backups(): Backup[] {
+    if (!FileManager.Exists(Cache.Config.root_path + "backups")) {
+      FileManager.MakeDirectory(Cache.Config.root_path + "backups");
+    }
+
+    return FileManager.Directory(Cache.Config.root_path + "backups").map(
+      (file) => {
+        return {
+          file,
+          unix: Math.floor(
+            new Date(file.replace(".tar.xz", "")).getTime() / 1000
+          ),
+        };
+      }
+    );
   }
 
   public static get IsOnline(): boolean {

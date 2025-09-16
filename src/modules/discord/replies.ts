@@ -3,6 +3,7 @@ import {
   EmbedBuilder,
   type ChatInputCommandInteraction,
 } from "discord.js";
+import type { Backup } from "../../types/server";
 
 function baseResponse(interaction: ChatInputCommandInteraction): EmbedBuilder {
   return new EmbedBuilder({
@@ -34,6 +35,17 @@ const Replies = {
     embed.setTitle("Server Not Installed");
     embed.setDescription(
       "You cannot run this command due to your server not being installed. Please run `/install`."
+    );
+    embed.setColor(Colors.DarkRed);
+
+    interaction.editReply({ embeds: [embed] });
+  },
+  CacheInUse: (interaction: ChatInputCommandInteraction) => {
+    const embed = baseResponse(interaction);
+
+    embed.setTitle("Cache In Use");
+    embed.setDescription(
+      "The cache is in use! This could be due to a active backup or backup restore is running at this moment."
     );
     embed.setColor(Colors.DarkRed);
 
@@ -136,17 +148,6 @@ const Replies = {
   },
 
   // Backup
-  BackupAlreadyRunning: (interaction: ChatInputCommandInteraction) => {
-    const embed = baseResponse(interaction);
-
-    embed.setTitle("Backup Already Processing");
-    embed.setDescription(
-      "It seems like your trying to create a backup of your server, but there is a backup already in process!"
-    );
-    embed.setColor(Colors.DarkRed);
-
-    interaction.editReply({ embeds: [embed] });
-  },
   BackupInProcess: (interaction: ChatInputCommandInteraction) => {
     const embed = baseResponse(interaction);
 
@@ -163,6 +164,68 @@ const Replies = {
 
     embed.setTitle("Backup Created");
     embed.setDescription("A backup has been successfully created!");
+    embed.setColor(Colors.Green);
+
+    interaction.editReply({ embeds: [embed] });
+  },
+
+  // ListBackups
+  NoBackups: (interaction: ChatInputCommandInteraction) => {
+    const embed = baseResponse(interaction);
+
+    embed.setTitle("No Backups Found");
+    embed.setDescription("Your server does not currently have any backups!");
+    embed.setColor(Colors.Orange);
+
+    interaction.editReply({ embeds: [embed] });
+  },
+  ViewBackups: (
+    interaction: ChatInputCommandInteraction,
+    backups: Backup[]
+  ) => {
+    const embed = baseResponse(interaction);
+    const display = backups
+      .sort((a, b) => b.unix - a.unix)
+      .map((backup, index) => {
+        return `Backup #${index + 1}:\nCreated: <t:${backup.unix}:R>\nFile: \`${
+          backup.file
+        }\``;
+      })
+      .join("\n\n");
+
+    embed.setTitle(`${backups.length} Backups Found`);
+    embed.setDescription(
+      `Here are the backups that I have found:\n\n${display}`
+    );
+    embed.setColor(Colors.Green);
+
+    interaction.editReply({ embeds: [embed] });
+  },
+
+  // RestoreBackup
+  BackupNotFound: (interaction: ChatInputCommandInteraction) => {
+    const embed = baseResponse(interaction);
+
+    embed.setTitle(`Backup Not Found`);
+    embed.setDescription("I could not find the backup file that entered!");
+    embed.setColor(Colors.DarkRed);
+
+    interaction.editReply({ embeds: [embed] });
+  },
+  RestoringBackup: (interaction: ChatInputCommandInteraction) => {
+    const embed = baseResponse(interaction);
+
+    embed.setTitle(`Restoring Backup`);
+    embed.setDescription("Restoring your backup, please wait a few moments.");
+    embed.setColor(Colors.Blue);
+
+    interaction.editReply({ embeds: [embed] });
+  },
+  BackupRestored: (interaction: ChatInputCommandInteraction) => {
+    const embed = baseResponse(interaction);
+
+    embed.setTitle(`Backup Restored`);
+    embed.setDescription("I successfully restored your backup!");
     embed.setColor(Colors.Green);
 
     interaction.editReply({ embeds: [embed] });
