@@ -1,0 +1,10 @@
+{
+  "name": "server-handler",
+  "module": "src/core/loader.ts",
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "child_process": "^1.0.2",
+    "discord.js": "^14.22.1"
+  }
+}
