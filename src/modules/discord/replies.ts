@@ -134,6 +134,39 @@ const Replies = {
 
     interaction.editReply({ embeds: [embed] });
   },
+
+  // Backup
+  BackupAlreadyRunning: (interaction: ChatInputCommandInteraction) => {
+    const embed = baseResponse(interaction);
+
+    embed.setTitle("Backup Already Processing");
+    embed.setDescription(
+      "It seems like your trying to create a backup of your server, but there is a backup already in process!"
+    );
+    embed.setColor(Colors.DarkRed);
+
+    interaction.editReply({ embeds: [embed] });
+  },
+  BackupInProcess: (interaction: ChatInputCommandInteraction) => {
+    const embed = baseResponse(interaction);
+
+    embed.setTitle("Backing Up");
+    embed.setDescription(
+      "I am creating a new backup right now! Please just give me a few moments."
+    );
+    embed.setColor(Colors.Blue);
+
+    interaction.editReply({ embeds: [embed] });
+  },
+  BackupCreated: (interaction: ChatInputCommandInteraction) => {
+    const embed = baseResponse(interaction);
+
+    embed.setTitle("Backup Created");
+    embed.setDescription("A backup has been successfully created!");
+    embed.setColor(Colors.Green);
+
+    interaction.editReply({ embeds: [embed] });
+  },
 };
 
 export default Replies;

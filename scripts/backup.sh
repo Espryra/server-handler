@@ -10,15 +10,16 @@ mkdir -p $cachepath
 for item in $backupitems; do
     if [ -e "$serverpath/$item" ]; then
         echo "Backing up $item..."
-        cp -r $serverpath/$item $cachepath/ || exit 2
+        cp -r $serverpath/$item $cachepath/ # || exit 2
     fi
 done
 
 if [ ! -d $backuppath ]; then
     mkdir -p $backuppath
-if
+fi
 
-tar -cJf $backuppath/$filename -C $serverpath/worlds/ $worldfolder
+tar -cJf "$backuppath/$filename" -C "$cachepath" .
+rm -rf $cachepath
 
 echo "Backup created!"
 exit 0
