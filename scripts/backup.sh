@@ -18,7 +18,7 @@ if [ ! -d $backuppath ]; then
     mkdir -p $backuppath
 fi
 
-tar -cJf "$backuppath/$filename" -C "$cachepath" .
+tar -czf "$backuppath/$filename" -C "$cachepath" .
 rm -rf $cachepath
 
 echo "Backup created!"

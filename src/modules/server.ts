@@ -62,7 +62,7 @@ export default class Server {
         serverpath: Cache.Config.root_path + "server",
         backuppath: Cache.Config.root_path + "backups",
         backupitems: Cache.Config.backup_items.join(" "),
-        filename: new Date().toISOString() + ".tar.xz",
+        filename: new Date().toISOString() + ".tar.gz",
       },
     });
 
@@ -87,7 +87,7 @@ export default class Server {
         return {
           file,
           unix: Math.floor(
-            new Date(file.replace(".tar.xz", "")).getTime() / 1000
+            new Date(file.replace(".tar.gz", "")).getTime() / 1000
           ),
         };
       }

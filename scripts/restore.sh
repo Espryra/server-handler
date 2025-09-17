@@ -12,8 +12,6 @@ for item in "$cachepath"/*; do
     if [ -e "$item" ]; then
         itemname=$(basename "$item")
 
-        echo $itemname
-
         rm -rf $serverpath/$itemname
         cp -r $cachepath/$itemname $serverpath
     fi
