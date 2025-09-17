@@ -8,6 +8,7 @@ export interface Config {
   root_path: string;
 
   discord_cooldown: number;
+  discord_allowed_users: string[];
 
   restart_times: string[];
   restart_messages: RestartMessage[];

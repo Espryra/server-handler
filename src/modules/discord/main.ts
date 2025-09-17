@@ -16,6 +16,7 @@ import RunCommand from "./commands/run";
 import StartCommand from "./commands/start";
 import StopCommand from "./commands/stop";
 import UninstallCommand from "./commands/uninstall";
+import Replies from "./replies";
 
 export default class Discord {
   private static Client: Client;
@@ -59,7 +60,12 @@ export default class Discord {
         interaction.editReply({ content: "I only work in discord servers!" });
         return;
       }
+      if (!Cache.Config.discord_allowed_users.includes(interaction.user.id)) {
+        await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
+        Replies.MissingPermission(interaction);
+        return;
+      }
       const command = Discord.Commands.find(
         (command) => command.data.name === interaction.commandName
       );

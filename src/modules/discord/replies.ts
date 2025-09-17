@@ -18,6 +18,15 @@ function baseResponse(interaction: ChatInputCommandInteraction): EmbedBuilder {
 
 const Replies = {
   // General
+  MissingPermission: (interaction: ChatInputCommandInteraction) => {
+    const embed = baseResponse(interaction);
+
+    embed.setTitle("Invalid Permission");
+    embed.setDescription("You are not allowed to use any of my commands!");
+    embed.setColor(Colors.DarkRed);
+
+    interaction.editReply({ embeds: [embed] });
+  },
   InternalError: (interaction: ChatInputCommandInteraction) => {
     const embed = baseResponse(interaction);
 

@@ -4,6 +4,7 @@
   "root_path": "/root/app/",
 
   "discord_cooldown": 1,
+  "discord_allowed_users": [],
 
   "restart_times": ["9:50", "13:50", "17:50"],
   "restart_messages": [
