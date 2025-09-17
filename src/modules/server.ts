@@ -8,6 +8,7 @@ import Sleep from "../utils/sleep";
 
 export default class Server {
   private static Instance: ChildProcess | undefined;
+  private static ConsoleOutput: string[] = [];
 
   public static async Init(): Promise<void> {
     this.AutoBackups();
@@ -41,6 +42,7 @@ export default class Server {
 
     if (Cache.Config.show_console) {
       this.Instance.stdout?.on("data", (chunk: Buffer) => {
+        this.ConsoleOutput.push(chunk.toString());
         console.log(chunk.toString());
       });
     }
@@ -95,6 +97,14 @@ export default class Server {
         };
       }
     );
+  }
+  public static Console(): string[] {
+    const data = this.ConsoleOutput.splice(
+      0,
+      Cache.Config.discord_console_lines
+    );
+
+    return data;
   }
 
   private static AutoBackups(): void {

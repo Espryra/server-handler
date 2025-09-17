@@ -5,6 +5,9 @@
 
   "discord_cooldown": 1,
   "discord_allowed_users": [],
+  "discord_console_channel": "",
+  "discord_console_speed": 1,
+  "discord_console_lines": 5,
 
   "restart_times": ["9:50", "13:50", "17:50"],
   "restart_messages": [

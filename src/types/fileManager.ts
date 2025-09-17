@@ -9,6 +9,9 @@ export interface Config {
 
   discord_cooldown: number;
   discord_allowed_users: string[];
+  discord_console_channel: string;
+  discord_console_speed: number;
+  discord_console_lines: number;
 
   restart_times: string[];
   restart_messages: RestartMessage[];

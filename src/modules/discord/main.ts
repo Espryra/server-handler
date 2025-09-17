@@ -1,5 +1,8 @@
 import {
+  ChannelType,
   Client,
+  Colors,
+  EmbedBuilder,
   IntentsBitField,
   MessageFlags,
   REST,
@@ -8,6 +11,7 @@ import {
 import type { Command } from "../../types/discord";
 import Cache from "../../utils/cache";
 import Logger from "../../utils/logger";
+import Server from "../server";
 import BackupCommand from "./commands/backup";
 import InstallCommand from "./commands/install";
 import ListBackupsCommand from "./commands/listBackups";
@@ -104,6 +108,8 @@ export default class Discord {
         Logger.Success(
           `Successfully logged in as ${Discord.Client.user?.username}!`
         );
+
+        this.SendConsole();
       })
       .catch((error) => {
         Logger.Error(error, error.stack);
@@ -126,5 +132,43 @@ export default class Discord {
     } catch (error) {
       Logger.Error("Error while deploying discord commands.", error);
     }
+  }
+
+  private static SendConsole(): void {
+    setInterval(() => {
+      if (!Cache.Config.discord_console_channel) {
+        return;
+      }
+
+      const channel = this.Client.channels.cache.get(
+        Cache.Config.discord_console_channel
+      );
+
+      if (!channel || channel.type !== ChannelType.GuildText) {
+        return;
+      }
+
+      const data = Server.Console().join("\n");
+
+      if (data.length === 0 || data.length > 4096) {
+        return;
+      }
+
+      const embed = new EmbedBuilder({
+        description: data,
+        timestamp: new Date(),
+        color: Colors.Gold,
+        footer: {
+          text: channel.guild.name,
+          icon_url: channel.guild.iconURL() ?? "",
+        },
+      });
+
+      try {
+        channel.send({
+          embeds: [embed],
+        });
+      } catch {}
+    }, Cache.Config.discord_console_speed * 1000);
   }
 }
