@@ -1,14 +1,17 @@
 import { spawn, type ChildProcess } from "child_process";
+import type { RestartMessage } from "../types/fileManager";
 import type { Backup } from "../types/server";
 import Cache from "../utils/cache";
 import FileManager from "../utils/fileManager";
 import Logger from "../utils/logger";
+import Sleep from "../utils/sleep";
 
 export default class Server {
   private static Instance: ChildProcess | undefined;
 
   public static async Init(): Promise<void> {
     this.AutoBackups();
+    this.AutoRestart();
   }
 
   public static get IsOnline(): boolean {
@@ -120,5 +123,52 @@ export default class Server {
         FileManager.Delete(Cache.Config.root_path + "backups/" + entry.file);
       }
     }, Cache.Config.backup_speed * 1000 * 60);
+  }
+  private static AutoRestart(): void {
+    const messages = Cache.Config.restart_messages;
+
+    if (Cache.Config.restart_times.length === 0) {
+      return;
+    }
+
+    setInterval(async () => {
+      const time = new Date();
+      const hours = time.getHours();
+      const minutes = time.getMinutes();
+
+      if (
+        !Cache.Config.restart_times.includes(
+          `${hours}:${String(minutes).padStart(1, "0")}`
+        )
+      ) {
+        return;
+      }
+      if (!this.Instance) {
+        return;
+      }
+
+      for (let i = 0; i < messages.length; i++) {
+        const entry = messages[i] as RestartMessage;
+
+        this.Write(`tellraw @a {"rawtext":[{"text":"${entry.message}"}]}`);
+
+        for (const command of entry.commands) {
+          this.Write(command);
+        }
+
+        await Sleep(entry.time * 1000);
+      }
+
+      this.Write("stop");
+
+      const loop = setInterval(() => {
+        if (this.Instance) {
+          return;
+        }
+
+        clearInterval(loop);
+        this.Start();
+      }, 1000);
+    }, 1000 * 60);
   }
 }

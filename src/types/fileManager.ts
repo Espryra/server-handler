@@ -9,7 +9,15 @@ export interface Config {
 
   discord_cooldown: number;
 
+  restart_times: string[];
+  restart_messages: RestartMessage[];
+
   backup_speed: number;
   backup_retention: number;
   backup_items: string[];
+}
+export interface RestartMessage {
+  message: string;
+  time: number;
+  commands: string[];
 }

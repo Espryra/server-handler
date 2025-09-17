@@ -5,6 +5,75 @@
 
   "discord_cooldown": 1,
 
+  "restart_times": ["9:50", "13:50", "17:50"],
+  "restart_messages": [
+    {
+      "message": "Restarting in 10 minutes",
+      "time": 300,
+      "commands": ["execute as @a at @s run playsound note.pling"]
+    },
+    {
+      "message": "Restarting in 5 minutes",
+      "time": 60,
+      "commands": ["execute as @a at @s run playsound note.pling"]
+    },
+    {
+      "message": "Restarting in 4 minutes",
+      "time": 60,
+      "commands": ["execute as @a at @s run playsound note.pling"]
+    },
+    {
+      "message": "Restarting in 3 minutes",
+      "time": 60,
+      "commands": ["execute as @a at @s run playsound note.pling"]
+    },
+    {
+      "message": "Restarting in 2 minutes",
+      "time": 60,
+      "commands": ["execute as @a at @s run playsound note.pling"]
+    },
+    {
+      "message": "Restarting in 1 minutes",
+      "time": 30,
+      "commands": ["execute as @a at @s run playsound note.pling"]
+    },
+    {
+      "message": "Restarting in 30 seconds",
+      "time": 15,
+      "commands": ["execute as @a at @s run playsound note.pling"]
+    },
+    {
+      "message": "Restarting in 15 seconds",
+      "time": 10,
+      "commands": ["execute as @a at @s run playsound note.pling"]
+    },
+    {
+      "message": "Restarting in 5 seconds",
+      "time": 1,
+      "commands": ["execute as @a at @s run playsound note.pling"]
+    },
+    {
+      "message": "Restarting in 4 seconds",
+      "time": 1,
+      "commands": ["execute as @a at @s run playsound note.pling"]
+    },
+    {
+      "message": "Restarting in 3 seconds",
+      "time": 1,
+      "commands": ["execute as @a at @s run playsound note.pling"]
+    },
+    {
+      "message": "Restarting in 2 seconds",
+      "time": 1,
+      "commands": ["execute as @a at @s run playsound note.pling"]
+    },
+    {
+      "message": "Restarting in 1 second",
+      "time": 1,
+      "commands": ["execute as @a at @s run playsound note.pling"]
+    }
+  ],
+
   "backup_speed": 270,
   "backup_retention": 12,
   "backup_items": [
